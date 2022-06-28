@@ -26,7 +26,6 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<CustomSuccessResponse<LoginUserDto>> registerUser(@RequestBody @Validated RegisterUserDto userDto) throws CustomExeption {
-
         return new ResponseEntity(new CustomSuccessResponse(userService.registerUser(userDto)), HttpStatus.CHECKPOINT);
     }
 
