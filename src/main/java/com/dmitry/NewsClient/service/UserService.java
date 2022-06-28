@@ -1,11 +1,15 @@
 package com.dmitry.NewsClient.service;
 
+import com.dmitry.NewsClient.dto.HandlerExeption;
 import com.dmitry.NewsClient.dto.LoginUserDto;
 import com.dmitry.NewsClient.dto.RegisterUserDto;
 import com.dmitry.NewsClient.entity.UserEntity;
+import com.dmitry.NewsClient.exeption.CustomExeption;
+import com.dmitry.NewsClient.exeption.ErrorCodes;
 import com.dmitry.NewsClient.repository.RepositoryUser;
 import lombok.RequiredArgsConstructor;
 
+import lombok.SneakyThrows;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -22,7 +26,7 @@ public class UserService  implements RegistrationService {
     @Override
     public LoginUserDto registerUser(RegisterUserDto userDto) {
         if (userRepo.findByEmail(userDto.getEmail()) != null) {
-            ResponseEntity.status(HttpStatus.BAD_REQUEST);
+            throw new CustomExeption(ErrorCodes.USER_WITH_THIS_EMAIL_ALREADY_EXIST);
         }
         UserEntity entity = new UserEntity();
         entity.setAvatar(userDto.getAvatar());

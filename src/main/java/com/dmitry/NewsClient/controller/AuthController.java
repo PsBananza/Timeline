@@ -3,6 +3,7 @@ package com.dmitry.NewsClient.controller;
 import com.dmitry.NewsClient.dto.CustomSuccessResponse;
 import com.dmitry.NewsClient.dto.LoginUserDto;
 import com.dmitry.NewsClient.dto.RegisterUserDto;
+import com.dmitry.NewsClient.exeption.CustomExeption;
 import com.dmitry.NewsClient.service.UserService;
 import lombok.RequiredArgsConstructor;
 
@@ -24,7 +25,7 @@ public class AuthController {
     private final UserService userService;
 
     @PostMapping("/register")
-    public ResponseEntity<CustomSuccessResponse<LoginUserDto>> registerUser(@RequestBody @Validated RegisterUserDto userDto) {
+    public ResponseEntity<CustomSuccessResponse<LoginUserDto>> registerUser(@RequestBody @Validated RegisterUserDto userDto) throws CustomExeption {
 
         return new ResponseEntity(new CustomSuccessResponse(userService.registerUser(userDto)), HttpStatus.CHECKPOINT);
     }
