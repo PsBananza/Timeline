@@ -3,7 +3,7 @@ package com.dmitry.NewsClient.controller;
 import com.dmitry.NewsClient.dto.CustomSuccessResponse;
 import com.dmitry.NewsClient.dto.LoginUserDto;
 import com.dmitry.NewsClient.dto.RegisterUserDto;
-import com.dmitry.NewsClient.exeption.CustomExeption;
+import com.dmitry.NewsClient.dto.CustomExeption;
 import com.dmitry.NewsClient.service.UserService;
 import lombok.RequiredArgsConstructor;
 

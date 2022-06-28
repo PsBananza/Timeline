@@ -1,5 +1,6 @@
-package com.dmitry.NewsClient.exeption;
+package com.dmitry.NewsClient.dto;
 
+import com.dmitry.NewsClient.exeption.ErrorCodes;
 import lombok.Getter;
 
 @Getter

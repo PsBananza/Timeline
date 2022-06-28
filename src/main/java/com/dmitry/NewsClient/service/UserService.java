@@ -1,17 +1,13 @@
 package com.dmitry.NewsClient.service;
 
-import com.dmitry.NewsClient.dto.HandlerExeption;
 import com.dmitry.NewsClient.dto.LoginUserDto;
 import com.dmitry.NewsClient.dto.RegisterUserDto;
 import com.dmitry.NewsClient.entity.UserEntity;
-import com.dmitry.NewsClient.exeption.CustomExeption;
+import com.dmitry.NewsClient.dto.CustomExeption;
 import com.dmitry.NewsClient.exeption.ErrorCodes;
 import com.dmitry.NewsClient.repository.RepositoryUser;
 import lombok.RequiredArgsConstructor;
 
-import lombok.SneakyThrows;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
