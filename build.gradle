@@ -21,8 +21,10 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok:1.18.24'
 	testCompileOnly 'org.projectlombok:lombok:1.18.24'
 	testAnnotationProcessor 'org.projectlombok:lombok:1.18.24'
-	implementation group: 'org.springframework.security', name: 'spring-security-core', version: '5.7.1'
 	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation', version: '2.7.1'
+	implementation group: 'org.springframework.security', name: 'spring-security-jwt', version: '1.1.1.RELEASE'
+	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: '2.5.5'
+	implementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
 }
 
 tasks.named('test') {

@@ -1,9 +1,11 @@
 package com.dmitry.NewsClient.service;
 
+import com.dmitry.NewsClient.config.jwt.JwtProvider;
+import com.dmitry.NewsClient.dto.AuthDto;
+import com.dmitry.NewsClient.dto.CustomExeption;
 import com.dmitry.NewsClient.dto.LoginUserDto;
 import com.dmitry.NewsClient.dto.RegisterUserDto;
 import com.dmitry.NewsClient.entity.UserEntity;
-import com.dmitry.NewsClient.dto.CustomExeption;
 import com.dmitry.NewsClient.exeption.ErrorCodes;
 import com.dmitry.NewsClient.repository.RepositoryUser;
 import lombok.RequiredArgsConstructor;
@@ -13,10 +15,9 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class UserService  implements RegistrationService {
+public class UserService  implements RegistrationService, AuthService {
 
     private final RepositoryUser userRepo;
-
     private final PasswordEncoder passwordEncoder;
 
     @Override
@@ -30,6 +31,7 @@ public class UserService  implements RegistrationService {
         entity.setName(userDto.getName());
         entity.setPassword(passwordEncoder.encode(userDto.getPassword()));
         entity.setRole(userDto.getRole());
+        JwtProvider jwtProvider = new JwtProvider();
         userRepo.save(entity);
         LoginUserDto loginUserDto = new LoginUserDto()
         .setAvatar(userDto.getAvatar())
@@ -37,8 +39,29 @@ public class UserService  implements RegistrationService {
                 .setId(entity.getId())
                 .setName(userDto.getName())
                 .setRole(userDto.getRole())
-                .setToken("rgdfg");
+                .setToken(jwtProvider.generateToken(userDto.getEmail()));
 
+
+        return loginUserDto;
+    }
+    @Override
+    public LoginUserDto authUser(AuthDto authDto) {
+        UserEntity entity;
+        entity = userRepo.findByEmail(authDto.getEmail());
+        if (entity == null) {
+            throw new CustomExeption(ErrorCodes.USER_NOT_FOUND);
+        }
+        if (!passwordEncoder.matches(authDto.getPassword(), entity.getPassword())) {
+            throw new CustomExeption(ErrorCodes.PASSWORD_NOT_VALID);
+        }
+        JwtProvider jwtProvider = new JwtProvider();
+        LoginUserDto loginUserDto = new LoginUserDto()
+                .setAvatar(entity.getAvatar())
+                .setEmail(entity.getEmail())
+                .setId(entity.getId())
+                .setName(entity.getName())
+                .setRole(entity.getRole())
+                .setToken(jwtProvider.generateToken(authDto.getEmail()));
 
         return loginUserDto;
     }
