@@ -3,6 +3,7 @@ package com.dmitry.NewsClient.config.jwt;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
+import java.util.UUID;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -19,10 +20,10 @@ public class JwtProvider {
 //   @Value("${jwt.secret}")
    private String jwtSecret = "qweqwe";
 
-    public String generateToken(String email) {
+    public String generateToken(UUID id) {
         Date date = Date.from(LocalDate.now().plusDays(30).atStartOfDay(ZoneId.systemDefault()).toInstant());
         return Jwts.builder()
-                .setSubject(email)
+                .setSubject(String.valueOf(id))
                 .setExpiration(date)
                 .signWith(SignatureAlgorithm.HS512, jwtSecret)
                 .compact();

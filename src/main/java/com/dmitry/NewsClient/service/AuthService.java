@@ -41,7 +41,7 @@ public class AuthService implements RegistrationService, AuthServiceInt {
                 .setId(entity.getId())
                 .setName(userDto.getName())
                 .setRole(userDto.getRole())
-                .setToken(jwtProvider.generateToken(userDto.getEmail()));
+                .setToken(jwtProvider.generateToken(entity.getId()));
 
 
         return loginUserDto;
@@ -63,7 +63,7 @@ public class AuthService implements RegistrationService, AuthServiceInt {
                 .setId(entity.getId())
                 .setName(entity.getName())
                 .setRole(entity.getRole())
-                .setToken(jwtProvider.generateToken(authDto.getEmail()));
+                .setToken(jwtProvider.generateToken(entity.getId()));
 
         return loginUserDto;
     }

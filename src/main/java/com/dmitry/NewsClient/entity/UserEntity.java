@@ -10,10 +10,12 @@ import javax.persistence.Table;
 
 
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 @Entity
 @Data
 @Table(name = "users")
+@Accessors(chain = true)
 public class UserEntity {
 
     private String avatar;
