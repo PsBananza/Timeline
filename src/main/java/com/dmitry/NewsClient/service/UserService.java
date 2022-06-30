@@ -1,68 +1,62 @@
 package com.dmitry.NewsClient.service;
 
-import com.dmitry.NewsClient.config.jwt.JwtProvider;
-import com.dmitry.NewsClient.dto.AuthDto;
-import com.dmitry.NewsClient.dto.CustomExeption;
-import com.dmitry.NewsClient.dto.LoginUserDto;
-import com.dmitry.NewsClient.dto.RegisterUserDto;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
+import com.dmitry.NewsClient.dto.PublicUserView;
 import com.dmitry.NewsClient.entity.UserEntity;
-import com.dmitry.NewsClient.exeption.ErrorCodes;
 import com.dmitry.NewsClient.repository.RepositoryUser;
 import lombok.RequiredArgsConstructor;
 
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class UserService  implements RegistrationService, AuthService {
+public class UserService {
 
     private final RepositoryUser userRepo;
-    private final PasswordEncoder passwordEncoder;
 
-    @Override
-    public LoginUserDto registerUser(RegisterUserDto userDto) {
-        if (userRepo.findByEmail(userDto.getEmail()) != null) {
-            throw new CustomExeption(ErrorCodes.USER_WITH_THIS_EMAIL_ALREADY_EXIST);
+    public List<PublicUserView> getUserAll() {
+        List<UserEntity> userEntity = userRepo.findAll();
+        PublicUserView userView = new PublicUserView();
+        List<PublicUserView> publicUserViews = new ArrayList<>();
+        for (UserEntity p: userEntity) {
+            userView.setAvatar(p.getAvatar())
+                    .setName(p.getName())
+                    .setRole(p.getRole())
+                    .setEmail(p.getEmail())
+                    .setId(p.getId());
+            publicUserViews.add(userView);
         }
-        UserEntity entity = new UserEntity();
-        entity.setAvatar(userDto.getAvatar());
-        entity.setEmail(userDto.getEmail());
-        entity.setName(userDto.getName());
-        entity.setPassword(passwordEncoder.encode(userDto.getPassword()));
-        entity.setRole(userDto.getRole());
-        JwtProvider jwtProvider = new JwtProvider();
-        userRepo.save(entity);
-        LoginUserDto loginUserDto = new LoginUserDto()
-        .setAvatar(userDto.getAvatar())
-        .setEmail(userDto.getEmail())
-                .setId(entity.getId())
-                .setName(userDto.getName())
-                .setRole(userDto.getRole())
-                .setToken(jwtProvider.generateToken(userDto.getEmail()));
-
-
-        return loginUserDto;
+        return publicUserViews;
     }
-    @Override
-    public LoginUserDto authUser(AuthDto authDto) {
-        UserEntity entity;
-        entity = userRepo.findByEmail(authDto.getEmail());
-        if (entity == null) {
-            throw new CustomExeption(ErrorCodes.USER_NOT_FOUND);
-        }
-        if (!passwordEncoder.matches(authDto.getPassword(), entity.getPassword())) {
-            throw new CustomExeption(ErrorCodes.PASSWORD_NOT_VALID);
-        }
-        JwtProvider jwtProvider = new JwtProvider();
-        LoginUserDto loginUserDto = new LoginUserDto()
-                .setAvatar(entity.getAvatar())
-                .setEmail(entity.getEmail())
-                .setId(entity.getId())
-                .setName(entity.getName())
+
+    public PublicUserView getUserId(UUID id) {
+        UserEntity entity = userRepo.findById(id);
+        PublicUserView userView = new PublicUserView();
+        userView.setId(entity.getId())
                 .setRole(entity.getRole())
-                .setToken(jwtProvider.generateToken(authDto.getEmail()));
+                .setAvatar(entity.getAvatar())
+                .setName(entity.getName())
+                .setEmail(entity.getEmail());
 
-        return loginUserDto;
+        return userView;
     }
+
+    public PublicUserView getUserInfo(String email) {
+        UserEntity entity = userRepo.findByEmail(email);
+        PublicUserView userView = new PublicUserView();
+        userView.setId(entity.getId())
+                .setRole(entity.getRole())
+                .setAvatar(entity.getAvatar())
+                .setName(entity.getName())
+                .setEmail(entity.getEmail());
+
+        return userView;
+    }
+
+
+
+
 }

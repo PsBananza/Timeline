@@ -1,7 +1,9 @@
-package com.dmitry.NewsClient.dto;
+package com.dmitry.NewsClient.exeption;
 
 import java.time.LocalDateTime;
 
+import com.dmitry.NewsClient.dto.CustomResponseEntityException;
+import com.dmitry.NewsClient.exeption.CustomException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -10,10 +12,10 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 
 @ControllerAdvice
-public class HandlerExeption extends ResponseEntityExceptionHandler {
-    @ExceptionHandler(value = {CustomExeption.class})
-    public final ResponseEntity<CustomResponseEntityExeption> handleAccessDeniedException(CustomExeption customExeption) {
-        var errorDetails = new CustomResponseEntityExeption();
+public class HandlerException extends ResponseEntityExceptionHandler {
+    @ExceptionHandler(value = {CustomException.class})
+    public final ResponseEntity<CustomResponseEntityException> handleAccessDeniedException(CustomException customExeption) {
+        var errorDetails = new CustomResponseEntityException();
         errorDetails.setTimestamp(LocalDateTime
                         .now()
                         .toString())

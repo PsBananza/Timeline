@@ -5,7 +5,7 @@ import lombok.experimental.Accessors;
 
 @Data
 @Accessors(chain = true)
-public class CustomResponseEntityExeption {
+public class CustomResponseEntityException {
 
     private String timestamp;
     private String status;

@@ -6,23 +6,25 @@ import java.util.Date;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.extern.java.Log;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-@Component
 @Log
+@Component
 public class JwtProvider {
 
-    @Value("$(jwt.secret)")
-    private String jwtSecret;
+//   @Value("${jwt.secret}")
+   private String jwtSecret = "qweqwe";
 
     public String generateToken(String email) {
-        Date date = Date.from(LocalDate.now().plusDays(15).atStartOfDay(ZoneId.systemDefault()).toInstant());
+        Date date = Date.from(LocalDate.now().plusDays(30).atStartOfDay(ZoneId.systemDefault()).toInstant());
         return Jwts.builder()
                 .setSubject(email)
                 .setExpiration(date)
+                .signWith(SignatureAlgorithm.HS512, jwtSecret)
                 .compact();
     }
 

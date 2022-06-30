@@ -1,4 +1,4 @@
-package com.dmitry.NewsClient.service;
+package com.dmitry.NewsClient.service.interfaceService;
 
 import com.dmitry.NewsClient.dto.LoginUserDto;
 import com.dmitry.NewsClient.dto.RegisterUserDto;
