@@ -5,8 +5,8 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 
-@EnableAutoConfiguration(exclude = { SecurityAutoConfiguration.class })
-@SpringBootApplication(exclude = {SecurityAutoConfiguration.class })
+//@EnableAutoConfiguration(exclude = { SecurityAutoConfiguration.class })
+@SpringBootApplication
 public class NewsClientApplication {
 
 	public static void main(String[] args) {

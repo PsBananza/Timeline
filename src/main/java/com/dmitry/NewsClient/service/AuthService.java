@@ -28,15 +28,15 @@ public class AuthService implements RegistrationService, AuthServiceInt {
             throw new CustomException(ErrorCodes.USER_WITH_THIS_EMAIL_ALREADY_EXIST);
         }
         UserEntity entity = new UserEntity();
-        entity.setAvatar(userDto.getAvatar());
         entity.setEmail(userDto.getEmail());
         entity.setName(userDto.getName());
         entity.setPassword(passwordEncoder.encode(userDto.getPassword()));
         entity.setRole(userDto.getRole());
+        entity.setAvatar(FileService.avatar);
         JwtProvider jwtProvider = new JwtProvider();
         userRepo.save(entity);
         LoginUserDto loginUserDto = new LoginUserDto()
-        .setAvatar(userDto.getAvatar())
+        .setAvatar(entity.getAvatar())
         .setEmail(userDto.getEmail())
                 .setId(entity.getId())
                 .setName(userDto.getName())
@@ -67,4 +67,5 @@ public class AuthService implements RegistrationService, AuthServiceInt {
 
         return loginUserDto;
     }
+
 }

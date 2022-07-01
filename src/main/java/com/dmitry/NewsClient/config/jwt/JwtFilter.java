@@ -10,8 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.dmitry.NewsClient.config.CustomUserDetails;
 import com.dmitry.NewsClient.config.CustomUserDetailsService;
-import com.dmitry.NewsClient.exeption.CustomException;
-import com.dmitry.NewsClient.exeption.ErrorCodes;
 import lombok.extern.java.Log;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,12 +44,12 @@ public class JwtFilter extends GenericFilterBean {
             UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(customUserDetails, null, customUserDetails.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(auth);
         }
-        throw new CustomException(ErrorCodes.TOKEN_NOT_PROVIDED);
+        filterChain.doFilter(servletRequest, servletResponse);
     }
 
     private String getTokenFromRequest(HttpServletRequest request) {
         String bearer = request.getHeader(AUTHORIZATION);
-        if (hasText(bearer) && bearer.startsWith("Bearer ")) {
+        if (hasText(bearer) && bearer.contains("Bearer")) {
             return bearer.substring(7);
         }
         return null;

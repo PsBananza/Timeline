@@ -4,22 +4,21 @@ import java.util.UUID;
 
 import com.dmitry.NewsClient.entity.UserEntity;
 import com.dmitry.NewsClient.repository.RepositoryUser;
+import lombok.RequiredArgsConstructor;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
-
-
 @Component
+@RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
-    @Autowired
-    private RepositoryUser userService;
+
+    private final RepositoryUser userRepo;
 
     @Override
     public CustomUserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        UserEntity userEntity = userService.findById(UUID.fromString(username));
+        UserEntity userEntity = userRepo.findById(UUID.fromString(username));
         return CustomUserDetails.fromUserEntityToCustomUserDetails(userEntity);
     }
 }

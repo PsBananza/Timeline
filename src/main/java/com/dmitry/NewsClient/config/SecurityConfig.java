@@ -1,8 +1,8 @@
 package com.dmitry.NewsClient.config;
 
 import com.dmitry.NewsClient.config.jwt.JwtFilter;
+import lombok.RequiredArgsConstructor;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -15,9 +15,10 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-    @Autowired
-    private JwtFilter jwtFilter;
+
+    private final JwtFilter jwtFilter;
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
@@ -26,7 +27,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/register", "/auth").permitAll()
+                .antMatchers("/user/*").permitAll()
+                .antMatchers("/news/*").permitAll()
+                .antMatchers("/auth").permitAll()
+                .antMatchers("/file/{fileName}").permitAll()
                 .and()
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
     }
