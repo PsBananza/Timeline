@@ -179,6 +179,26 @@ public class NewsService {
         return new BaseSuccessResponse();
     }
 
+    public BaseSuccessResponse putNews(long id, NewsDto newsDto) {
+
+        NewsEntity entity = newsRepo.findById(id);
+        entity.setDescription(newsDto.getDescription())
+                .setTitle(newsDto.getTitle());
+        List<Tag> list = new ArrayList<>();
+        for (String tags: newsDto.getTags()) {
+            Tag tag = tagRepo.findByTitle(tags);
+            if (tag == null) {
+                tag = new Tag();
+                tag.setTitle(tags);
+            }
+            list.add(tag);
+        }
+        entity.setTags(list);
+        newsRepo.save(entity);
+
+        return new BaseSuccessResponse();
+    }
+
 
 
 
