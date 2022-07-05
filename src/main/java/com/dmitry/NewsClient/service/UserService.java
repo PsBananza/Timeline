@@ -4,7 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import com.dmitry.NewsClient.dto.BaseSuccessResponse;
 import com.dmitry.NewsClient.dto.PublicUserView;
+import com.dmitry.NewsClient.dto.PutUserDto;
+import com.dmitry.NewsClient.dto.PutUserDtoResponse;
 import com.dmitry.NewsClient.entity.UserEntity;
 import com.dmitry.NewsClient.repository.RepositoryUser;
 import lombok.RequiredArgsConstructor;
@@ -44,8 +47,8 @@ public class UserService {
         return userView;
     }
 
-    public PublicUserView getUserInfo(String email) {
-        UserEntity entity = userRepo.findByEmail(email);
+    public PublicUserView getUserInfo(UUID id) {
+        UserEntity entity = userRepo.findById(id);
         PublicUserView userView = new PublicUserView();
         userView.setId(entity.getId())
                 .setRole(entity.getRole())
@@ -54,6 +57,29 @@ public class UserService {
                 .setEmail(entity.getEmail());
 
         return userView;
+    }
+
+    public PutUserDtoResponse putUserDtoResponse(PutUserDto userDto, UUID id) {
+        UserEntity entity = userRepo.findById(id);
+        entity.setAvatar(userDto.getAvatar())
+                .setEmail(userDto.getEmail())
+                .setName(userDto.getName())
+                .setRole(userDto.getRole());
+        userRepo.save(entity);
+        PutUserDtoResponse userView = new PutUserDtoResponse();
+        userView.setId(entity.getId())
+                .setRole(entity.getRole())
+                .setAvatar(entity.getAvatar())
+                .setName(entity.getName())
+                .setEmail(entity.getEmail());
+
+        return userView;
+    }
+
+    public BaseSuccessResponse deleteUser(UUID id) {
+        UserEntity entity = userRepo.findById(id);
+        userRepo.delete(entity);
+        return new BaseSuccessResponse();
     }
 
 

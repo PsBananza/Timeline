@@ -1,9 +1,5 @@
 package com.dmitry.NewsClient.exeption;
 
-import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 import lombok.Getter;
 
 @Getter
