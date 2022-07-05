@@ -6,6 +6,7 @@ import lombok.experimental.Accessors;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Data
@@ -18,10 +19,11 @@ public class NewsEntity {
     private String description;
     private String image;
     private String title;
+    private String username;
     @ManyToOne(optional=false, cascade=CascadeType.ALL)
     @JsonIgnore
     private UserEntity user;
-    @OneToMany(mappedBy = "entity")
+    @ManyToMany(cascade = CascadeType.ALL)
     @JsonIgnore
     private List<Tag> tags;
 }

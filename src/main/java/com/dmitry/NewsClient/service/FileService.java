@@ -30,9 +30,9 @@ public class FileService {
     public String fileUpt(MultipartFile multipartFile) throws IOException {
         String fileName = UUID.randomUUID() + "." + FilenameUtils.getExtension(multipartFile.getOriginalFilename());
         Path copyLocation = Paths.get(uploadDir + File.separator + fileName);
-        avatar = String.valueOf(copyLocation);
+        avatar = "http://localhost:8080/file/" + fileName;
         Files.copy(multipartFile.getInputStream(), copyLocation, StandardCopyOption.REPLACE_EXISTING);
-        return String.valueOf(copyLocation);
+        return avatar;
     }
 
         public UrlResource getFile(final String fileName) throws IOException {

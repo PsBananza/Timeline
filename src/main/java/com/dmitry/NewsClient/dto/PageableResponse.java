@@ -6,10 +6,10 @@ import lombok.experimental.Accessors;
 import java.util.List;
 
 @Data
-@Accessors
+@Accessors(chain = true)
 public class PageableResponse<T> {
 
-    private List<GetNewsOutDto> content;
-    private Long numberOfElements;
+    List<GetNewsOutDto> content;
+    Long numberOfElements;
 
 }

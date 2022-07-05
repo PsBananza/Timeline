@@ -1,7 +1,6 @@
 package com.dmitry.NewsClient.entity;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -16,7 +15,4 @@ public class Tag {
     @GeneratedValue(strategy = GenerationType.AUTO)
     Long id;
     String title;
-    @ManyToOne(optional=false, cascade=CascadeType.ALL)
-    @JsonIgnore
-    private NewsEntity entity;
 }
