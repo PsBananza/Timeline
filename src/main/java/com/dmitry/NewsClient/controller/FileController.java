@@ -45,7 +45,7 @@ public class FileController {
     @PostMapping("/uploadFile")
     public ResponseEntity<CustomSuccessResponse<String>> registerUser(@RequestParam MultipartFile file) throws CustomException, IOException {
 
-        return new ResponseEntity(new CustomSuccessResponse(fileDirUrl + fileService.fileUpt(file)), HttpStatus.OK);
+        return new ResponseEntity(new CustomSuccessResponse(fileService.fileUpt(file)), HttpStatus.OK);
     }
 
 }
