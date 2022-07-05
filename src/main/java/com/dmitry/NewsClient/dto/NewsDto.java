@@ -1,11 +1,12 @@
 package com.dmitry.NewsClient.dto;
 
-import lombok.Data;
-import lombok.experimental.Accessors;
-
-import javax.validation.constraints.Size;
 import java.util.List;
 import java.util.UUID;
+
+import javax.validation.constraints.Size;
+
+import lombok.Data;
+import lombok.experimental.Accessors;
 
 @Data
 @Accessors

@@ -1,11 +1,11 @@
 package com.dmitry.NewsClient.dto;
 
+import java.util.List;
+import java.util.UUID;
+
 import com.dmitry.NewsClient.entity.Tag;
 import lombok.Data;
 import lombok.experimental.Accessors;
-
-import java.util.List;
-import java.util.UUID;
 
 @Data
 @Accessors(chain = true)

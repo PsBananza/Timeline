@@ -1,18 +1,8 @@
 package com.dmitry.NewsClient.service;
 
-import com.dmitry.NewsClient.dto.*;
-import com.dmitry.NewsClient.entity.NewsEntity;
-import com.dmitry.NewsClient.entity.Tag;
-import com.dmitry.NewsClient.entity.UserEntity;
-import com.dmitry.NewsClient.repository.NewsRep;
-import com.dmitry.NewsClient.repository.RepositoryUser;
-import com.dmitry.NewsClient.repository.TagRep;
-import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.stereotype.Service;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
@@ -20,9 +10,26 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+
+import com.dmitry.NewsClient.dto.BaseSuccessResponse;
+import com.dmitry.NewsClient.dto.CreateNewsSuccessResponse;
+import com.dmitry.NewsClient.dto.CustomSuccessResponse;
+import com.dmitry.NewsClient.dto.GetNewsOutDto;
+import com.dmitry.NewsClient.dto.NewsDto;
+import com.dmitry.NewsClient.dto.PageableResponse;
+import com.dmitry.NewsClient.entity.NewsEntity;
+import com.dmitry.NewsClient.entity.Tag;
+import com.dmitry.NewsClient.entity.UserEntity;
+import com.dmitry.NewsClient.repository.NewsRep;
+import com.dmitry.NewsClient.repository.RepositoryUser;
+import com.dmitry.NewsClient.repository.TagRep;
+import lombok.RequiredArgsConstructor;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
@@ -32,7 +39,7 @@ public class NewsService {
     private final NewsRep newsRepo;
     private final EntityManager entityManager;
 
-    public CreateNewsSuccessResponse createNews (NewsDto newsDto, UUID id){
+    public CreateNewsSuccessResponse createNews(NewsDto newsDto, UUID id) {
         NewsEntity newsEntity = new NewsEntity();
         UserEntity entity = userRepo.findById(newsDto.getUser_id());
         List<Tag> list = new ArrayList<>();
@@ -61,12 +68,12 @@ public class NewsService {
         return new CreateNewsSuccessResponse();
     }
 
-    public CustomSuccessResponse getNews (int page, int perPage) {
+    public CustomSuccessResponse getNews(int page, int perPage) {
         Pageable pageable = PageRequest.of(page - 1, perPage, Sort.by("id").descending());
         Page<NewsEntity> pagedResult = newsRepo.findAll(pageable);
         List<GetNewsOutDto> getNewsOutDto = new ArrayList<>();
         PageableResponse<GetNewsOutDto> response = new PageableResponse<>();
-        for (NewsEntity entity : pagedResult ) {
+        for (NewsEntity entity : pagedResult) {
             GetNewsOutDto newsEntity = new GetNewsOutDto();
             newsEntity.setId(entity.getId());
             newsEntity.setDescription(entity.getDescription());
@@ -82,7 +89,7 @@ public class NewsService {
         return new CustomSuccessResponse(response);
     }
 
-    public PageableResponse findNews (int page, int perPage, String author, String keywords, String tags) {
+    public PageableResponse findNews(int page, int perPage, String author, String keywords, String tags) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<NewsEntity> criteriaQuery = criteriaBuilder.createQuery(NewsEntity.class);
         Root<NewsEntity> newsRoot = criteriaQuery.from(NewsEntity.class);
@@ -135,13 +142,13 @@ public class NewsService {
         return pageableResponse;
     }
 
-    public CustomSuccessResponse getUserNews (int page, int perPage, UUID id) {
+    public CustomSuccessResponse getUserNews(int page, int perPage, UUID id) {
         Pageable pageable = PageRequest.of(page - 1, perPage, Sort.by("id").descending());
         UserEntity user = userRepo.findById(id);
         Page<NewsEntity> pagedResult = newsRepo.findByUser(pageable, user);
         List<GetNewsOutDto> getNewsOutDto = new ArrayList<>();
         PageableResponse<GetNewsOutDto> response = new PageableResponse<>();
-        for (NewsEntity entity : pagedResult ) {
+        for (NewsEntity entity : pagedResult) {
             GetNewsOutDto newsEntity = new GetNewsOutDto();
             newsEntity.setId(entity.getId());
             newsEntity.setDescription(entity.getDescription());
@@ -156,6 +163,23 @@ public class NewsService {
         response.setNumberOfElements(pagedResult.getTotalElements());
         return new CustomSuccessResponse(response);
     }
+
+    public BaseSuccessResponse deleteNews(long id) {
+        NewsEntity entity = newsRepo.findById(id);
+        List<Tag> listTagDeleteNews = entity.getTags();
+        List<Tag> list = List.of();
+        entity.setTags(list);
+        entity.setUser(new UserEntity());
+        newsRepo.delete(entity);
+        for (Tag s: listTagDeleteNews) {
+            if (newsRepo.findByTags(s) == null) {
+                tagRepo.delete(s);
+            }
+        }
+        return new BaseSuccessResponse();
+    }
+
+
 
 
 

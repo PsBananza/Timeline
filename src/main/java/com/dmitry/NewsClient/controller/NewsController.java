@@ -1,14 +1,29 @@
 package com.dmitry.NewsClient.controller;
 
+import java.util.List;
+import java.util.UUID;
+
 import com.dmitry.NewsClient.config.jwt.JwtProvider;
-import com.dmitry.NewsClient.dto.*;
+import com.dmitry.NewsClient.dto.BaseSuccessResponse;
+import com.dmitry.NewsClient.dto.CreateNewsSuccessResponse;
+import com.dmitry.NewsClient.dto.CustomSuccessResponse;
+import com.dmitry.NewsClient.dto.GetNewsOutDto;
+import com.dmitry.NewsClient.dto.NewsDto;
+import com.dmitry.NewsClient.dto.PageableResponse;
 import com.dmitry.NewsClient.exeption.CustomException;
 import com.dmitry.NewsClient.service.NewsService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.UUID;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 @CrossOrigin
 @RequestMapping("/news")
@@ -44,6 +59,11 @@ public class NewsController {
                                                                                     @RequestParam int perPage,
                                                                                     @PathVariable UUID userId) throws CustomException {
         return service.getUserNews(page, perPage, userId);
+    }
+
+    @DeleteMapping("/{id}")
+    public BaseSuccessResponse deleteNews(@PathVariable Long id) throws CustomException {
+        return service.deleteNews(id);
     }
 
 
