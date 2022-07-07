@@ -11,9 +11,10 @@ import com.dmitry.NewsClient.dto.GetNewsOutDto;
 import com.dmitry.NewsClient.dto.NewsDto;
 import com.dmitry.NewsClient.dto.PageableResponse;
 import com.dmitry.NewsClient.exeption.CustomException;
-import com.dmitry.NewsClient.service.NewsService;
+import com.dmitry.NewsClient.service.newsInterface.NewsService;
 import lombok.RequiredArgsConstructor;
 
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin
@@ -26,7 +27,7 @@ public class NewsController {
 
     @PostMapping
     public CreateNewsSuccessResponse createNews(@RequestHeader(name = "Authorization") String token,
-                                                @RequestBody NewsDto newsDto) throws CustomException {
+                                                @RequestBody @Validated NewsDto newsDto) throws CustomException {
         return service.createNews(newsDto, UUID.fromString(provider.getLoginFromToken(token)));
     }
 

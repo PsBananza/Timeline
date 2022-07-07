@@ -15,14 +15,16 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 public class HandlerException extends ResponseEntityExceptionHandler {
     @ExceptionHandler({CustomException.class})
     public final ResponseEntity<CustomResponseEntityException> handleAccessDeniedException(CustomException customExeption) {
+        int[] listError = {Integer.parseInt(String.valueOf(customExeption.getCode()))};
         var errorDetails = new CustomResponseEntityException();
         errorDetails.setTimestamp(LocalDateTime
                         .now()
                         .toString())
-                .setStatus(String.valueOf(customExeption.getCode()))
-                .setError(customExeption.getMessage());
+                .setStatusCode(Integer.parseInt(String.valueOf(customExeption.getCode())))
+                .setCodes(listError);
 
         return ResponseEntity.badRequest().body(errorDetails);
     }
 
 }
+

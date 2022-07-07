@@ -9,7 +9,7 @@ import com.dmitry.NewsClient.dto.CustomSuccessResponse;
 import com.dmitry.NewsClient.dto.PublicUserView;
 import com.dmitry.NewsClient.dto.PutUserDto;
 import com.dmitry.NewsClient.exeption.CustomException;
-import com.dmitry.NewsClient.service.UserService;
+import com.dmitry.NewsClient.service.userInterface.UserService;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.http.HttpStatus;
