@@ -13,8 +13,8 @@ import lombok.Data;
 public class AuthDto {
     @NotBlank(message = ValidationConstants.USER_EMAIL_NOT_NULL)
     @Email(message = ValidationConstants.USER_EMAIL_NOT_VALID)
-    @Size(min = ValidationConstants.USER_EMAIL_MIN_SIZE,
-            max = ValidationConstants.USER_EMAIL_MAX_SIZE, message = ValidationConstants.USER_EMAIL_SIZE_NOT_VALID)
+    @Size(min = ValidationConstants.USER_EMAIL_MIN_SIZE, max = ValidationConstants.USER_EMAIL_MAX_SIZE,
+            message = ValidationConstants.USER_EMAIL_NOT_VALID)
     private String email;
     @NotNull
     @NotBlank

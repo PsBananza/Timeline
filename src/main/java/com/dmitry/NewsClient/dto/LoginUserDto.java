@@ -19,18 +19,15 @@ public class LoginUserDto {
     @NotBlank(message = ValidationConstants.USER_EMAIL_NOT_NULL)
     @Email(message = ValidationConstants.USER_EMAIL_NOT_VALID)
     @Size(min = ValidationConstants.USER_EMAIL_MIN_SIZE,
-            max = ValidationConstants.USER_EMAIL_MAX_SIZE, message = ValidationConstants.USER_EMAIL_SIZE_NOT_VALID)
+            max = ValidationConstants.USER_EMAIL_MAX_SIZE, message = ValidationConstants.USER_EMAIL_NOT_VALID)
     private String email;
 
     UUID id;
 
-    @Size(min = 3, max = 25)
+    @Size(min = ValidationConstants.USER_NAME_MIN_SIZE, max = ValidationConstants.USER_NAME_MAX_SIZE,
+            message = ValidationConstants.USERNAME_SIZE_NOT_VALID)
     private String name;
-
-    @Size(min = 3, max = 25)
     private String role;
-
-
     private String token;
 
 }

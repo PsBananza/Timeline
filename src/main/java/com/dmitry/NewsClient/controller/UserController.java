@@ -25,6 +25,8 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+
 @CrossOrigin
 @RequestMapping("user")
 @RestController
@@ -49,7 +51,7 @@ public class UserController {
 
     @PutMapping
     public ResponseEntity<CustomSuccessResponse<PublicUserView>> putUser(@RequestHeader(name = "Authorization") String token,
-                                                                         @RequestBody @Validated PutUserDto putUserDto) throws CustomException {
+                                                                         @RequestBody @Valid PutUserDto putUserDto) throws CustomException {
         return new ResponseEntity(new CustomSuccessResponse(userService.putUserDtoResponse(putUserDto, UUID.fromString(provider.getLoginFromToken(token)))), HttpStatus.OK);
     }
 

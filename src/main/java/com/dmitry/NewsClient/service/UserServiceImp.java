@@ -55,6 +55,7 @@ public class UserServiceImp implements UserService {
         entity.setAvatar(userDto.getAvatar())
                 .setEmail(userDto.getEmail())
                 .setName(userDto.getName())
+                .setAvatar(FileServiceImp.avatar)
                 .setRole(userDto.getRole());
         userRepo.save(entity);
         return userViewMapper.userDtoResp(entity);

@@ -41,21 +41,17 @@ public class NewsServiceImp implements NewsService {
     private final TagRep tagRepo;
     private final NewsRep newsRepo;
     private final EntityManager entityManager;
-    private final UserViewMapper userMapper;
     private final GetNewsOutDtoMapper newsMapper;
 
     @Override
     public CreateNewsSuccessResponse createNews(NewsDto newsDto, UUID id) {
         NewsEntity newsEntity = new NewsEntity();
-        UserEntity entity = userRepo.findById(newsDto.getUser_id());
+        UserEntity entity = userRepo.findById(newsDto.getUserId());
         List<Tag> list = new ArrayList<>();
 
         for (String tags: newsDto.getTags()) {
-            Tag tag = tagRepo.findByTitle(tags);
-            if (tag == null) {
-                tag = new Tag();
-                tag.setTitle(tags);
-            }
+            Tag tag = new Tag();
+            tag.setTitle(tags);
             list.add(tag);
         }
         newsEntity.setDescription(newsDto.getDescription())
@@ -161,9 +157,7 @@ public class NewsServiceImp implements NewsService {
         entity.setUser(new UserEntity());
         newsRepo.delete(entity);
         for (Tag s: listTagDeleteNews) {
-            if (newsRepo.findByTags(s) == null) {
                 tagRepo.delete(s);
-            }
         }
         return new BaseSuccessResponse();
     }
@@ -173,14 +167,12 @@ public class NewsServiceImp implements NewsService {
 
         NewsEntity entity = newsRepo.findById(id);
         entity.setDescription(newsDto.getDescription())
-                .setTitle(newsDto.getTitle());
+                .setTitle(newsDto.getTitle())
+                .setImage(FileServiceImp.avatar);
         List<Tag> list = new ArrayList<>();
         for (String tags: newsDto.getTags()) {
-            Tag tag = tagRepo.findByTitle(tags);
-            if (tag == null) {
-                tag = new Tag();
-                tag.setTitle(tags);
-            }
+            Tag tag = new Tag();
+            tag.setTitle(tags);
             list.add(tag);
         }
         entity.setTags(list);

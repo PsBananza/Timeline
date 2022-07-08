@@ -1,19 +1,20 @@
 package com.dmitry.NewsClient.repository;
 
-import java.util.List;
 import java.util.UUID;
 
 import com.dmitry.NewsClient.entity.UserEntity;
-import lombok.NonNull;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public interface RepositoryUser extends JpaRepository<UserEntity, Long> {
-    UserEntity findByEmail(String userDto);
-    @NonNull
-    List<UserEntity> findAll();
+
+    @Query(value = "SELECT DISTINCT u FROM UserEntity u WHERE email = :email")
+    UserEntity findByEmail(String email);
+
+    @Query(value = "SELECT DISTINCT u FROM UserEntity u WHERE id = :id")
     UserEntity findById(UUID id);
 
 }
