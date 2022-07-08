@@ -11,19 +11,12 @@ import com.dmitry.NewsClient.dto.GetNewsOutDto;
 import com.dmitry.NewsClient.dto.NewsDto;
 import com.dmitry.NewsClient.dto.PageableResponse;
 import com.dmitry.NewsClient.exeption.CustomException;
-import com.dmitry.NewsClient.service.NewsService;
+import com.dmitry.NewsClient.service.newsInterface.NewsService;
 import lombok.RequiredArgsConstructor;
 
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @CrossOrigin
 @RequestMapping("/news")
@@ -34,7 +27,7 @@ public class NewsController {
     private final JwtProvider provider;
 
     @PostMapping
-    public CreateNewsSuccessResponse createNews(@RequestHeader(name = "Authorization") String token,
+    public CreateNewsSuccessResponse createNews(@RequestHeader(name = "Authorization") String token, @Valid
                                                 @RequestBody NewsDto newsDto) throws CustomException {
         return service.createNews(newsDto, UUID.fromString(provider.getLoginFromToken(token)));
     }
@@ -66,5 +59,9 @@ public class NewsController {
         return service.deleteNews(id);
     }
 
+    @PutMapping("/{id}")
+    public BaseSuccessResponse putNews(@PathVariable Long id, @RequestBody @Valid NewsDto newsDto) throws CustomException {
+        return service.putNews(id, newsDto);
+    }
 
 }

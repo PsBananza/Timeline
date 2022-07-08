@@ -1,24 +1,20 @@
 package com.dmitry.NewsClient.entity;
 
 import java.util.List;
+import java.util.UUID;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.experimental.Accessors;
 
 
 @Entity
-@Data
+@Setter
+@Getter
 @Table(name = "task")
 @Accessors(chain = true)
 public class NewsEntity {
@@ -29,7 +25,7 @@ public class NewsEntity {
     private String image;
     private String title;
     private String username;
-    @ManyToOne(optional = false, cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JsonIgnore
     private UserEntity user;
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)

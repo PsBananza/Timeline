@@ -7,10 +7,13 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.experimental.Accessors;
 
 @Entity
-@Data
+@Setter
+@Getter
 @Table(name = "tags")
 @Accessors(chain = true)
 public class Tag {

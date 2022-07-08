@@ -15,10 +15,13 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.experimental.Accessors;
 
 @Entity
-@Data
+@Setter
+@Getter
 @Table(name = "users")
 @Accessors(chain = true)
 public class UserEntity {

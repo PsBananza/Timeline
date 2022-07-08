@@ -1,16 +1,17 @@
 package com.dmitry.NewsClient.controller;
 
+import javax.validation.Valid;
+
 import com.dmitry.NewsClient.dto.AuthDto;
 import com.dmitry.NewsClient.dto.CustomSuccessResponse;
 import com.dmitry.NewsClient.dto.LoginUserDto;
 import com.dmitry.NewsClient.dto.RegisterUserDto;
-import com.dmitry.NewsClient.exeption.CustomException;
-import com.dmitry.NewsClient.service.AuthService;
+import com.dmitry.NewsClient.service.authInterface.AuthService;
+import com.dmitry.NewsClient.service.authInterface.RegistrationService;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,14 +25,15 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 
     private final AuthService userService;
+    private final RegistrationService registerService;
 
     @PostMapping("/register")
-    public ResponseEntity<CustomSuccessResponse<LoginUserDto>> registerUser(@RequestBody @Validated RegisterUserDto userDto) throws CustomException {
-        return new ResponseEntity(new CustomSuccessResponse(userService.registerUser(userDto)), HttpStatus.OK);
+    public ResponseEntity<CustomSuccessResponse<LoginUserDto>> registerUser(@RequestBody @Valid RegisterUserDto userDto) {
+        return new ResponseEntity(new CustomSuccessResponse(registerService.registerUser(userDto)), HttpStatus.OK);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<CustomSuccessResponse<LoginUserDto>> authUser(@RequestBody @Validated AuthDto authDto) throws CustomException {
+    public ResponseEntity<CustomSuccessResponse<LoginUserDto>> authUser(@RequestBody @Valid AuthDto authDto) {
         return new ResponseEntity(new CustomSuccessResponse(userService.authUser(authDto)), HttpStatus.OK);
     }
 

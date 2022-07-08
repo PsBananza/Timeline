@@ -7,8 +7,9 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class CustomResponseEntityException {
 
+    private boolean success = true;
+    private int statusCode;
+    private int[] codes;
     private String timestamp;
-    private String status;
-    private String error;
 
 }

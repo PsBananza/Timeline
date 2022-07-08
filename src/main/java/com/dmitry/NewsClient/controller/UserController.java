@@ -9,7 +9,7 @@ import com.dmitry.NewsClient.dto.CustomSuccessResponse;
 import com.dmitry.NewsClient.dto.PublicUserView;
 import com.dmitry.NewsClient.dto.PutUserDto;
 import com.dmitry.NewsClient.exeption.CustomException;
-import com.dmitry.NewsClient.service.UserService;
+import com.dmitry.NewsClient.service.userInterface.UserService;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.http.HttpStatus;
@@ -24,6 +24,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.validation.Valid;
 
 @CrossOrigin
 @RequestMapping("user")
@@ -49,7 +51,7 @@ public class UserController {
 
     @PutMapping
     public ResponseEntity<CustomSuccessResponse<PublicUserView>> putUser(@RequestHeader(name = "Authorization") String token,
-                                                                         @RequestBody @Validated PutUserDto putUserDto) throws CustomException {
+                                                                         @RequestBody @Valid PutUserDto putUserDto) throws CustomException {
         return new ResponseEntity(new CustomSuccessResponse(userService.putUserDtoResponse(putUserDto, UUID.fromString(provider.getLoginFromToken(token)))), HttpStatus.OK);
     }
 
